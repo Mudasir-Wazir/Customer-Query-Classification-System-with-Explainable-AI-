@@ -1,44 +1,83 @@
+# 📊 Customer Service Query Classification with Explainable AI (XAI)
 
-
-## 🧠 Explainable AI for Political Bias Classifier
-
-### 🔍 Project Overview
-This project extends a political bias detection model with **Explainable AI (XAI)** techniques to improve interpretability and trust. While the core model (BERT + ANN) classifies news articles as Left, Center, or Right, this phase uses SHAP and LIME to explain model decisions, revealing **why** a particular bias label was predicted.
-
-The goal is to make NLP-based media analysis not just accurate, but **transparent and auditable**, especially important for domains involving public trust like journalism, politics, and education.
+This project focuses on classifying customer service queries into multiple topics using NLP techniques and interpretable machine learning models. It explores traditional and modern text vectorization strategies alongside popular classifiers, with a focus on model performance and explainability through SHAP and LIME.
 
 ---
 
-### ⚙️ Key Features
+## 🧠 Project Overview
 
-- ✅ **SHAP (SHapley Additive exPlanations)**: 
-  - Shows global and local feature impact on the model's predictions.
-  - Visualizes how specific words influence a bias label (e.g., “freedom” driving right-leaning classification).
+Customer service queries are often unstructured and diverse. This project aims to classify such queries into categories (like Shipping, Sales/Promotions, etc.) using:
 
-- ✅ **LIME (Local Interpretable Model-agnostic Explanations)**: 
-  - Provides human-readable interpretations for individual predictions.
-  - Reveals which token groups contribute to specific classification decisions.
+- Text preprocessing & lemmatization
+- Multiple text vectorization techniques
+- Three different ML classifiers
+- Explainability using SHAP and LIME
+- Model evaluation through accuracy & classification reports
 
-- ✅ **Word Importance Heatmaps**: 
-  - Interactive visualizations highlight emotionally or politically charged language.
-  - Offers direct feedback for media editors and readers.
-
-- ✅ **Comparative Explanation**: 
-  - Demonstrates how the same article might be classified differently if a few keywords are altered.
-  - Supports style transfer analysis by showing shifting model attention.
+The entire pipeline is implemented in a modular, object-oriented format for scalability and reuse.
 
 ---
 
-### 📊 Results Summary
+## 🔍 Methodology
 
-- **Interpretability Insights**:
-  - SHAP confirmed that words like *"immigration"*, *"tax cuts"*, and *"gun rights"* strongly influenced Right-leaning predictions.
-  - LIME explanations aligned closely with SHAP, confirming robustness of model behavior.
+1. **Data Preprocessing**:
+   - Lowercasing, regex-based tokenization
+   - Removal of short words (length ≤ 2)
+   - Lemmatization using WordNet
+   - Creation of a `clean_questions` column
 
-- **Bias Surface Mapping**:
-  - Global SHAP summary plots revealed that **Center** class predictions are influenced by neutral terms (e.g., *"report"*, *"update"*) while **Left** predictions skew toward social justice and equality-oriented terms.
+2. **Text Vectorization Techniques**:
+   - **TF-IDF**: Classic frequency-based weighting
+   - **Word2Vec**: Average of word embeddings trained on the corpus
+   - **Doc2Vec**: Paragraph vector representations
+   - **TF-IDF (no stopwords)**: Alternate variant for comparison
 
-- **Trust Calibration**:
-  - Providing explanations increased user trust in model outputs by helping them understand *why* a classification was made—key for adoption in journalism and policy.
+3. **Train/Test Splitting**:
+   - Stratified 80/20 train-test split
+   - Label encoding for multiclass classification
+
+4. **Model Explainability**:
+   - **SHAP (SHapley Additive exPlanations)** was used to understand the global and local importance of features.
+   - **LIME (Local Interpretable Model-agnostic Explanations)** was applied to analyze the behavior of individual predictions for black-box models like XGBoost and LightGBM.
+
+---
+
+## 🧪 Models Used
+
+- **Decision Tree Classifier**
+- **XGBoost Classifier**
+- **LightGBM Classifier**
+
+Each classifier was evaluated on all four vectorization techniques.
+
+---
+
+## 🚀 Key Features
+
+- 🧼 Clean, modular code using Python classes (`CustomerQueryClassifier`)
+- 📊 Class imbalance visualization
+- 🧠 Trains Word2Vec and Doc2Vec embeddings using Gensim
+- 📈 Evaluation with:
+  - Accuracy Score
+  - Classification Report (Precision, Recall, F1-score)
+- 🧠 Explainability powered by:
+  - **SHAP** for model-wide and instance-level insights
+  - **LIME** for local interpretability of individual predictions
+
+---
+
+## 📊 Results Summary
+
+| Vectorizer           | Model         | Accuracy (Approx.) |
+|----------------------|---------------|---------------------|
+| TF-IDF               | LightGBM      | High                |
+| Word2Vec             | XGBoost       | Moderate            |
+| Doc2Vec              | Decision Tree | Lower               |
+| TF-IDF (no stopwords)| LightGBM      | Highest             |
+
+- **Top Performer**: LightGBM + TF-IDF (with stopword removal)
+- **Key Insight**: Simpler models benefit from richer contextual embeddings, but advanced boosting models outperform consistently.
+
+---
 
 
